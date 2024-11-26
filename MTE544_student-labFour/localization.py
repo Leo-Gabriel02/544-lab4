@@ -73,9 +73,21 @@ class localization(Node):
             
             # TODO PART 5 Bonus put the Q and R matrices
             # that you conclude from lab Three
-            Q=...
-            R=...
-            P=...
+            Q_CONST = 0.1
+            R_CONST = 0.6
+            
+            Q= Q_CONST * np.array([[1,0,0,0,0,0], # Q array is Q constant multiplied by 6x6 I matrix from state vector x=[x,y,th,w,v,vdot]
+                            [0,1,0,0,0,0],
+                            [0,0,1,0,0,0],
+                            [0,0,0,1,0,0],
+                            [0,0,0,0,1,0],
+                            [0,0,0,0,0,1]])
+
+            R= R_CONST * np.array([[1,0,0,0], # R array is R constant multiplied by 4x4 I matrix from odometry and IMU z=[v,w,ax,ay]
+                            [0,1,0,0],
+                            [0,0,1,0],
+                            [0,0,0,1],])
+            P=Q
                         
             self.kf=kalman_filter(P,Q,R, x)
             
