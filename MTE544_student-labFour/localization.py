@@ -10,6 +10,7 @@ from geometry_msgs.msg import Twist
 
 
 from rclpy.qos import QoSProfile
+from rclpy import qos
 from nav_msgs.msg import Odometry as odom
 
 from sensor_msgs.msg import Imu
@@ -24,7 +25,15 @@ import message_filters
 
 rawSensors=0; kalmanFilter=1
 
-odom_qos=QoSProfile(reliability=2, durability=2, history=1, depth=10)
+TURTLEBOT = 3
+if TURTLEBOT == 4:
+    odom_qos=QoSProfile(reliability=2, durability=2, history=1, depth=10)
+else:
+    odom_qos=QoSProfile(
+        reliability=qos.ReliabilityPolicy.RELIABLE, 
+        durability=qos.DurabilityPolicy.VOLATILE, 
+        history=qos.HistoryPolicy.KEEP_LAST, depth=10)
+
 
 
 class localization(Node):

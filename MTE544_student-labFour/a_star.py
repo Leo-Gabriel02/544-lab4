@@ -54,7 +54,7 @@ def get_distance(pos, end):
     y2 = end[1]
 
     if EUCLIDIAN:
-        return sqrt((x1-x2)^2 + (y1-y2)^2)
+        return sqrt((x1-x2)**2 + (y1-y2)**2)
     else:
         return abs(x1-x2) + abs(y1-y2)
 
@@ -169,7 +169,7 @@ def search(maze, start, end):
         for new_position in move:
 
             # TODO PART 4 Get node position
-            node_position = (current_node[0] + move[0], current_node[1] + move[1])
+            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
             node_x = node_position[0]
             node_y = node_position[1]
 
