@@ -111,8 +111,13 @@ class mapManipulator(Node):
         astar_cell = [self.position_2_cell(p) for p in astar_path]
         odom_cell = [self.position_2_cell(p) for p in odom_path]
 
-        X_MIN = 100
+        X_MIN = 75
         Y_MIN = 75
+
+        for i in range(0, image_array.shape[0]-96, 3):
+            plt.plot([i-0.5 for j in range(100, 225)], [p-100 for p in range(100, 225)], color='lightgray', alpha=0.5, label="_nolegend_")
+        for i in range(0, image_array.shape[1]-200, 3):
+            plt.plot([p-100 for p in range(100, 300)], [i-0.5 for j in range(100, 300)], color='lightgray', alpha=0.5, label="_nolegend_")
 
         # Plot the image
         plt.imshow(image_array[X_MIN:200, Y_MIN:275], cmap='gray')
@@ -125,6 +130,7 @@ class mapManipulator(Node):
         plt.scatter(odom_cell[-1][0]-Y_MIN, odom_cell[-1][1]-X_MIN, color='orange', marker='x')
 
         plt.legend(["Target Path (A Star)", "Actual Path (Odom)", "Robot Start", "Robot End"])
+        plt.grid()
         plt.show()
 
 
@@ -298,7 +304,7 @@ if __name__=="__main__":
 
     MAP_UTILITIS=mapManipulator(args.map, args.std)
 
-    test = "location2-True"
+    test = "location1-True"
     astar_f = "CSVs/" + test + "-astar-path.csv"
     odom_f = "CSVs/" + test + "-robotPose-odom.csv"
 
@@ -316,7 +322,7 @@ if __name__=="__main__":
             l2 = l.split(',')
             odom.append((float(l2[0]), float(l2[1])))
 
-    MAP_UTILITIS.plot_pgm_image(MAP_UTILITIS.image_array, astar, odom, 'Location 2 - Euclidian Distance')
+    MAP_UTILITIS.plot_pgm_image(MAP_UTILITIS.image_array, astar, odom, 'Location 1 - Euclidian Distance')
 
     #rclpy.spin(MAP_UTILITIS)
 
