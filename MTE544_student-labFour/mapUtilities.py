@@ -105,14 +105,26 @@ class mapManipulator(Node):
 
         return width, height, max_value, pixels
 
-    def plot_pgm_image(self, image_array):
+    def plot_pgm_image(self, image_array, astar_path, odom_path, title):
         # Convert pixel values to a NumPy array
 
+        astar_cell = [self.position_2_cell(p) for p in astar_path]
+        odom_cell = [self.position_2_cell(p) for p in odom_path]
+
+        X_MIN = 100
+        Y_MIN = 75
 
         # Plot the image
-        plt.imshow(image_array, cmap='gray')
+        plt.imshow(image_array[X_MIN:200, Y_MIN:275], cmap='gray')
         plt.axis('off')
-        plt.title('PGM Image')
+        plt.title(title)
+        plt.plot([p[0]-Y_MIN for p in astar_cell], [p[1]-X_MIN for p in astar_cell])
+        plt.plot([p[0]-Y_MIN for p in odom_cell[1:-1]], [p[1]-X_MIN for p in odom_cell[1:-1]])
+
+        plt.scatter(odom_cell[0][0]-Y_MIN, odom_cell[0][1]-X_MIN, color='orange')
+        plt.scatter(odom_cell[-1][0]-Y_MIN, odom_cell[-1][1]-X_MIN, color='orange', marker='x')
+
+        plt.legend(["Target Path (A Star)", "Actual Path (Odom)", "Robot Start", "Robot End"])
         plt.show()
 
 
@@ -286,7 +298,25 @@ if __name__=="__main__":
 
     MAP_UTILITIS=mapManipulator(args.map, args.std)
 
-    MAP_UTILITIS.make_likelihood_field()
+    test = "location2-True"
+    astar_f = "CSVs/" + test + "-astar-path.csv"
+    odom_f = "CSVs/" + test + "-robotPose-odom.csv"
+
+    astar = []
+    odom = []
+
+    with open(astar_f) as f:
+        f.readline()
+        for l in f.readlines():
+            l2 = l.split(",")
+            astar.append((float(l2[0]), float(l2[1])))
+    with open(odom_f) as f:
+        f.readline()
+        for l in f.readlines():
+            l2 = l.split(',')
+            odom.append((float(l2[0]), float(l2[1])))
+
+    MAP_UTILITIS.plot_pgm_image(MAP_UTILITIS.image_array, astar, odom, 'Location 2 - Euclidian Distance')
 
     #rclpy.spin(MAP_UTILITIS)
 
