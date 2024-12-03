@@ -1,6 +1,7 @@
 
 from mapUtilities import *
 from a_star import *
+from utilities import Logger, STARTTIME, EUCLIDIAN
 
 POINT_PLANNER=0; TRAJECTORY_PLANNER=1
 
@@ -9,6 +10,7 @@ class planner:
 
         self.type=type_
         self.mapName=mapName
+        self.astar_logger=Logger(f"CSVs/{STARTTIME}-{EUCLIDIAN}-astar-path.csv" , ["x", "y"])
 
     
     def plan(self, startPose, endPose):
@@ -33,7 +35,7 @@ class planner:
         # the mean is located on the occupant grid.
          
         # HELP - not sure what to set this to, just used default value
-        self.m_utilites=mapManipulator(laser_sig=0.01)
+        self.m_utilites=mapManipulator(laser_sig=0.7)
             
         self.costMap=self.m_utilites.make_likelihood_field()
         
@@ -55,6 +57,8 @@ class planner:
         
         
         Path = list(map(self.m_utilites.cell_2_position, astar_path))
+        for p in Path:
+            self.astar_logger.log_values(p)
 
         # TODO PART 5 return the path as list of [x,y]
         return Path

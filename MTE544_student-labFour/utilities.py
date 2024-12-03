@@ -3,9 +3,12 @@
 
 from math import atan2, asin, sqrt
 from sensor_msgs.msg import LaserScan
-
+import time as time2
 
 import numpy as np
+
+STARTTIME = int(time2.time())
+EUCLIDIAN = False
 
 
 M_PI=3.1415926535

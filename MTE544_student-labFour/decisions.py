@@ -47,10 +47,10 @@ class decision_maker(Node):
 
         # TODO PART 5 your localization type
         # IF BROKEN CHANGE kalmanFilter TO rawSensors
-        self.localizer=localization(kalmanFilter)
+        self.localizer=localization(rawSensors)
         
         if motion_type==POINT_PLANNER:
-            self.controller=controller(klp=0.2, klv=0.5, kap=0.8, kav=0.6)      
+            self.controller=controller(klp=0.5, klv=0.2, kli=1.5, kap=1, kav=0.3, kai=0.6)      
             self.planner=planner(POINT_PLANNER)
 
         

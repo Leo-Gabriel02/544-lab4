@@ -3,7 +3,7 @@ from pid import PID_ctrl
 
 import numpy as np
 
-from utilities import euler_from_quaternion, calculate_angular_error, calculate_linear_error
+from utilities import euler_from_quaternion, calculate_angular_error, calculate_linear_error, STARTTIME, EUCLIDIAN
 
 M_PI=3.1415926535
 
@@ -13,10 +13,10 @@ class controller:
     
     
     
-    def __init__(self, klp=0.2, klv=0.2, kli=0.2, kap=0.2, kav=0.2, kai=0.2):
+    def __init__(self, klp, klv, kli, kap, kav, kai):
         
-        self.PID_linear=PID_ctrl(PID, klp, klv, kli, filename_="linear.csv")
-        self.PID_angular=PID_ctrl(PID, kap, kav, kai, filename_="angular.csv")
+        self.PID_linear=PID_ctrl(PID, klp, klv, kli, filename_=f"CSVs/{STARTTIME}-{EUCLIDIAN}-linear.csv")
+        self.PID_angular=PID_ctrl(PID, kap, kav, kai, filename_=f"CSVs/{STARTTIME}-{EUCLIDIAN}-angular.csv")
 
     
     def vel_request(self, pose, goal, status):
@@ -37,7 +37,7 @@ class controller:
 
 class trajectoryController(controller):
 
-    def __init__(self, klp=0.2, klv=0.2, kli=0.2, kap=0.2, kav=0.2, kai=0.2, lookAhead=1.0, targetVel=1.0):
+    def __init__(self, klp, klv, kli, kap, kav, kai, lookAhead=1.0, targetVel=1.0):
         super().__init__(klp, klv, kli, kap, kav, kai)
         self.lookAhead=lookAhead
         self.targetVelocity=targetVel

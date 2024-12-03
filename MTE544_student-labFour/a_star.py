@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt
-
+from utilities import EUCLIDIAN
 
 class Node:
     """
@@ -46,7 +46,7 @@ def return_path(current_node, maze):
 
     return path
 
-EUCLIDIAN = True
+
 def get_distance(pos, end):
     x1 = pos[0]
     y1 = pos[1]
