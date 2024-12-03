@@ -30,11 +30,11 @@ class planner:
     def initTrajectoryPlanner(self):
 
 
-        # TODO PART 5 Create the cost-map, the laser_sig is 
-        # the standard deviation for the gausiian for which
+        # Create the cost-map, the laser_sig is
+        # the standard deviation for the gausian for which
         # the mean is located on the occupant grid.
          
-        # HELP - not sure what to set this to, just used default value
+        # Laser sig of 0.7 helped avoid walls, making the path stay very far from obstacles
         self.m_utilites=mapManipulator(laser_sig=0.7)
             
         self.costMap=self.m_utilites.make_likelihood_field()
@@ -48,19 +48,20 @@ class planner:
         # the cost-map is in pixels. You can by the way, convert the pixels
         # to the cartesian coordinates and work by that index, the a_star finds
         # the path regardless. 
+
+        # Convert the cell pixels into the cartesian coordinates using provided function
         startPose=self.m_utilites.position_2_cell(startPoseCart)
         endPose=self.m_utilites.position_2_cell(endPoseCart)
-        
-        # TODO PART 5 convert the cell pixels into the cartesian coordinates
 
+        # Run a-star using the search function
         astar_path = search(self.costMap, startPose, endPose)
         
-        
+        # Store and log the generated path for the robot to follow
         Path = list(map(self.m_utilites.cell_2_position, astar_path))
         for p in Path:
             self.astar_logger.log_values(p)
 
-        # TODO PART 5 return the path as list of [x,y]
+        # Return the path to be used in decisions.py
         return Path
 
 

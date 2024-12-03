@@ -74,7 +74,7 @@ def search(maze, start, end):
         :return:
     """
 
-    # TODO PART 4 Create start and end node with initized values for g, h and f
+    # Create start and end node with initial values for g, h and f
     # Use None as parent if not defined
     start_node = Node(parent=None, position=start)
     start_node.g = 0     # cost from start Node
@@ -102,8 +102,7 @@ def search(maze, start, end):
     outer_iterations = 0
     max_iterations = (len(maze) // 2) ** 10
 
-    # TODO PART 4 what squares do we search . serarch movement is left-right-top-bottom
-    # (4 or 8 movements) from every positon
+    # The directions of 8 possible cells to traverse to from current cell
     move = [[0, 1],  # go up
             [-1, 0],  # go left
             [0, -1],  # go down
@@ -130,7 +129,7 @@ def search(maze, start, end):
                 c) if child in yet_to_visit dict then ignore it
                 d) else move the child to yet_to_visit dict
     """
-    # TODO PART 4 find maze has got how many rows and columns
+    # Size of maze is based on the shape of the maze array
     no_rows, no_columns = np.shape(maze)
 
     # Loop until you find the end
@@ -168,12 +167,12 @@ def search(maze, start, end):
 
         for new_position in move:
 
-            # TODO PART 4 Get node position
+            # Calculate node position
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
             node_x = node_position[0]
             node_y = node_position[1]
 
-            # TODO PART 4 Make sure within range (check if within maze boundary)
+            # Ensure desired node is within boundary
             if node_x < 0 or node_x >= no_columns:
                 continue
             if node_y < 0 or node_y >= no_rows:
@@ -193,15 +192,15 @@ def search(maze, start, end):
 
         for child in children:
 
-            # TODO PART 4 Child is on the visited dict (use get method to check if child is in visited dict, if not found then default value is False)
+            # If child is already in the visited dict, skip iteration
             if visited_dict.get(child.position):
                 continue
 
-            # TODO PART 4 Create the f, g, and h values
+            # Cost g of child based on current position ,
             child.g = current_node.g + get_distance(current_node.position, child.position)
-            # Heuristic costs calculated here, this is using eucledian distance
+            # Heuristic costs calculated here. Type of distance (euclidean or Manhattan) set by a flag in localisation
             child.h = get_distance(child.position, end)
-
+            # Store f based on g and h
             child.f = child.g + child.h
 
             # Child is already in the yet_to_visit list and g cost is already lower

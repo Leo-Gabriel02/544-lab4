@@ -42,12 +42,11 @@ class decision_maker(Node):
         
         publishing_period=1/rate
 
-        # TODO PART 5 choose your threshold
+        # 5cm from goal is a reasonable target
         self.reachThreshold = .05
 
-        # TODO PART 5 your localization type
-        # IF BROKEN CHANGE kalmanFilter TO rawSensors
-        self.localizer=localization(rawSensors)
+        # Use kalman filter from lab 3
+        self.localizer=localization(kalmanFilter)
         
         if motion_type==POINT_PLANNER:
             self.controller=controller(klp=0.5, klv=0.2, kli=1.5, kap=1, kav=0.3, kai=0.6)      
@@ -55,7 +54,7 @@ class decision_maker(Node):
 
         
         elif motion_type==TRAJECTORY_PLANNER:
-            # TODO PART 5 Bonus Put the gains that you conclude from lab 2
+            # PID gains from lab 2
             self.controller=trajectoryController(klp=0.5, klv=0.2, kli=1.5, kap=1, kav=0.3, kai=0.6) # PID gains from lab 2
             self.planner=planner(TRAJECTORY_PLANNER)
         

@@ -83,8 +83,7 @@ class localization(Node):
                         0,
                         0])        
             
-            # TODO PART 5 Bonus put the Q and R matrices
-            # that you conclude from lab Three
+            # Best Q and R matrices from lab 3 are used
             Q_CONST = 0.1
             R_CONST = 0.9
             
