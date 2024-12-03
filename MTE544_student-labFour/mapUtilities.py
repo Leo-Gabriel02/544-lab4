@@ -185,7 +185,7 @@ class mapManipulator(Node):
         self.occ_points=np.array(occupied_points)
         
                 
-        #self.plot_pgm_image(likelihood_field_img)
+        self.plot_pgm_image(likelihood_field_img)
 
         self.likelihood_field = likelihood_field
         
@@ -278,13 +278,15 @@ if __name__=="__main__":
     rclpy.init()
 
     parser=argparse.ArgumentParser()
-    parser.add_argument('--map', type=str, default="./your_map/room.yaml", help='the absolute path to argument')
-    parser.add_argument('--std', type=float, help='the std', default=0.01)
+    parser.add_argument('--map', type=str, default="room.yaml", help='the absolute path to argument')
+    parser.add_argument('--std', type=float, help='the std', default=0.7)
 
 
     args = parser.parse_args()
 
     MAP_UTILITIS=mapManipulator(args.map, args.std)
+
+    MAP_UTILITIS.make_likelihood_field()
 
     #rclpy.spin(MAP_UTILITIS)
 
