@@ -106,14 +106,15 @@ class mapManipulator(Node):
         return width, height, max_value, pixels
 
     def plot_pgm_image(self, image_array, astar_path, odom_path, title):
-        # Convert pixel values to a NumPy array
-
+        
+        # Convert paths to pixel coordinates
         astar_cell = [self.position_2_cell(p) for p in astar_path]
         odom_cell = [self.position_2_cell(p) for p in odom_path]
 
         X_MIN = 75
         Y_MIN = 75
 
+        # Plot grids
         for i in range(0, image_array.shape[0]-96, 3):
             plt.plot([i-0.5 for j in range(100, 225)], [p-100 for p in range(100, 225)], color='lightgray', alpha=0.5, label="_nolegend_")
         for i in range(0, image_array.shape[1]-200, 3):
@@ -123,9 +124,12 @@ class mapManipulator(Node):
         plt.imshow(image_array[X_MIN:200, Y_MIN:275], cmap='gray')
         plt.axis('off')
         plt.title(title)
+
+        # Plot the two paths
         plt.plot([p[0]-Y_MIN for p in astar_cell], [p[1]-X_MIN for p in astar_cell])
         plt.plot([p[0]-Y_MIN for p in odom_cell[1:-1]], [p[1]-X_MIN for p in odom_cell[1:-1]])
 
+        # Add start and end points
         plt.scatter(odom_cell[0][0]-Y_MIN, odom_cell[0][1]-X_MIN, color='orange')
         plt.scatter(odom_cell[-1][0]-Y_MIN, odom_cell[-1][1]-X_MIN, color='orange', marker='x')
 
@@ -311,6 +315,7 @@ if __name__=="__main__":
     astar = []
     odom = []
 
+    # Read in astar and odom path data
     with open(astar_f) as f:
         f.readline()
         for l in f.readlines():
@@ -322,6 +327,7 @@ if __name__=="__main__":
             l2 = l.split(',')
             odom.append((float(l2[0]), float(l2[1])))
 
+    # Plot complete image
     MAP_UTILITIS.plot_pgm_image(MAP_UTILITIS.image_array, astar, odom, 'Location 1 - Euclidian Distance')
 
     #rclpy.spin(MAP_UTILITIS)
